@@ -1,0 +1,142 @@
+<?include('_header.html')?>
+
+<div style="display: none;">
+	<pre>
+		<?print_r($f->getTagList())?>
+	</pre>
+</div>
+
+<div class="base-list-wrap">
+
+	<div class="category-tabs">
+
+		<ul>
+			<li class="<?=!$category_id ? 'active' : ''?>">
+				<a href="/">
+					<span>新着</span>
+				</a>
+			</li>
+
+			<? foreach($category_list as $key => $val){ ?>
+				<li class="<?=$key == $category_id ? 'active' : ''?>">
+					<a href="?category_id=<?=$key?>">
+						<span>
+							<?=$val?>
+						</span>
+					</a>
+				</li>
+			<? } ?>
+
+		</ul>
+
+	</div>
+
+	<ul class="article-list">
+		<? foreach($articles['data'] as $key => $article){ ?>
+
+			<? $date = DateTime::createFromFormat('Y-m-d H:i:s', $article['created_at']); ?>
+			<? $date_1 = new DateTime($article['created_at']); ?>
+			<? $date_2 = new DateTime(); ?>
+			<? $diff = $date_1->diff($date_2); ?>
+			<? $tags = explode(",",$article['tag'])?>
+
+			<li>
+				<a href="detail.php?id=<?=$article['topic_id']?>" class="item-wrap">
+					<? if($key < 10){ ?>
+						<img src="<?=$article['img_src']?>" alt="<?=$article['title']?>" width="80" height="80">
+					<? }else{ ?>
+						<img class="lazyload" data-src="<?=$article['img_src']?>" alt="<?=$article['title']?>" width="80" height="80">
+					<? } ?>
+
+					<p class="created">
+						<? if(date('Ymd') == $date->format('Ymd') && $diff->h < 2 ){ ?>
+							<b class="new">New</b>
+						<? } ?>
+						<span><?=$date->format('y年n月j日 G時')?></span>
+					</p>
+
+					<p class="title"><?=$article['title']?></p>
+
+					<p class="tags">
+						<? foreach($tags as $tag){ ?>
+							<span>#
+								<?=$tag?>
+							</span>
+						<? } ?>
+					</p>
+				</a>
+			</li>
+
+		<? } ?>
+	</ul>
+
+</div>
+
+<div class="pagination">
+	<ul class="pagination-list">
+		<?
+			$page_col_num = 5;
+			$total_page_num = $last_page;
+
+			if ($now_page == $total_page_num && $total_page_num >= $page_col_num) {
+				$min_page_num = $now_page - 4;
+				$max_page_num = $now_page;
+			} elseif ($now_page == ($total_page_num-1) && $total_page_num >= $page_col_num) {
+				$min_page_num = $now_page - 3;
+				$max_page_num = $now_page + 1;
+			} elseif ($now_page == 2 && $total_page_num >= $page_col_num) {
+				$min_page_num = $now_page - 1;
+				$max_page_num = $now_page + 3;
+			} elseif ($now_page == 1 && $total_page_num >= $page_col_num) {
+				$min_page_num = $now_page;
+				$max_page_num = 5;
+			} elseif ($total_page_num < $page_col_num) {
+				$min_page_num = 1;
+				$max_page_num = $total_page_num;
+			} else {
+				$min_page_num = $now_page - 2;
+				$max_page_num = $now_page + 2;
+			}
+		?>
+
+		<?
+		$query = "";
+		if($category_id){
+			$query = '&category_id='.$category_id;
+		}
+		if($tag_id){
+			$query = '&tag_id='.$tag_id;
+		}
+		?>
+
+		<?if ($now_page != 1){ ?>
+			<li class="list-item"><a href="?page=1<?=$query?>">&lt;&lt;</a></li>
+		<? } ?>
+
+		<? for ($i = $min_page_num; $i <= $max_page_num; $i++){?>
+			<li class="list-item <?=$now_page == $i ? 'active' : '';?>">
+				<a href="?page=<?=$i?><?=$query?>"><?=$i?></a>
+			</li>
+		<? } ?>
+
+		<? if ($now_page != $max_page_num){ ?>
+			<li class="list-item">
+				<a href="?page=<?=$max_page_num?><?=$query?>">&gt;</a>
+			</li>
+		<? } ?>
+
+	</ul>
+</div>
+
+<div class="tag-list">
+	<p class="items-head">タグ一覧</p>
+	<ul>
+		<? foreach($f->getTagList() as $tag){ ?>
+			<li>
+				<a href="/?tag_id=<?=$tag['tag_id']?>">#<?=$f->getTagName($tag['tag_id'])?></a>
+			</li>
+		<? } ?>
+	</ul>
+</div>
+
+<?include('_footer.html')?>
