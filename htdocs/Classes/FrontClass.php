@@ -286,18 +286,39 @@ class FrontClass extends ModelClass
 		$m = new ModelClass;
 		$user_id = $this->createId();
 		$columns = [
-			':topic_id',
-			':n_user_id',
-			':total_view',
+			'topic_id',
+			'n_user_id',
+			'total_view',
 		];
 		$values = [
-			$this->_topic_id,
-			$user_id,
-			1,
+			'topic_id' => $this->_topic_id,
+			'n_user_id' => $user_id,
+			'total_view' => 1,
 		];
-
 		$sql = $m->create($columns,'article_views');
 		$m->postParams($sql,$values);
+	}
+
+	/**
+	* @return bool $bool
+	*/
+	public function checkArticleView()
+	{
+		$m = new ModelClass;
+		$user_id = $this->createId();
+		$sql = "
+		SELECT
+			*
+		FROM
+			article_views
+		WHERE
+			topic_id = '".$this->_topic_id."' AND
+			n_user_id = '".$user_id."'
+		";
+		$stmt = $m->_pdo->prepare($sql);
+		$stmt->execute();
+		$datas = $stmt->fetchAll();
+		return count($datas) ? true : false;
 	}
 
 	/**
