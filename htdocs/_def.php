@@ -16,6 +16,8 @@ define('URL_LIST',[
 	4 => 'https://girlschannel.net/topics/category/cook/',
 	5 => 'https://girlschannel.net/topics/category/fashion/',
 	6 => 'https://girlschannel.net/topics/category/love/',
+	7 => 'https://girlschannel.net/topics/category/news/',
+	8 => 'https://girlschannel.net/topics/category/gossip/',
 ]);
 
 define('CATRGORY_LIST',[
@@ -25,6 +27,8 @@ define('CATRGORY_LIST',[
 	4 => '料理',
 	5 => 'ファッション',
 	6 => '恋愛',
+	7 => 'ニュース',
+	8 => '芸能',
 ]);
 
 define('TAG_LIST',[
@@ -138,6 +142,31 @@ define('TAG_LIST',[
 		'婚約',
 		'片思い',
 		'記念日',	
+	],
+	7 => [
+		'事件',
+		'事故',
+		'台風',
+		'社会',
+		'容疑者',
+		'地震',
+		'国内',
+	],
+	8 => [
+		'整形',
+		'タレント',
+		'美人',
+		'俳優',
+		'ジャニーズ',
+		'イケメン',
+		'プライベート',
+		'交際',
+		'破局',
+		'アイドル',
+		'婚約',
+		'芸人',
+		'炎上',
+		'スキャンダル',
 	],
 ]);
 

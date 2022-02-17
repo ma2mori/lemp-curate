@@ -232,12 +232,20 @@ class GetContentsClass extends ModelClass
 				$target_id = 4;
 				break;
 
-			case $now_i >= 40 && $now_i < 50:
+			case $now_i >= 40 && $now_i < 45:
+				$target_id = 8;
+				break;
+
+			case $now_i >= 45 && $now_i < 50:
 				$target_id = 5;
 				break;
 
-			case $now_i >= 50 && $now_i < 60:
+			case $now_i >= 50 && $now_i < 55:
 				$target_id = 6;
+				break;
+
+			case $now_i >= 55 && $now_i < 60:
+				$target_id = 7;
 				break;
 
 			default:
