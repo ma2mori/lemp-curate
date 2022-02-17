@@ -13,10 +13,12 @@ class FrontClass extends ModelClass
 	public function __construct()
 	{
 		parent::__construct();
-		$this->_topic_id    = isset($_GET['id']) ? (int)$_GET['id'] : null;
-		$this->_category_id = isset($_GET['category_id']) ? (int)$_GET['category_id'] : null;
-		$this->_tag_id      = isset($_GET['tag_id']) ? (int)$_GET['tag_id'] : null;
-		$this->_route_name  = basename($_SERVER['PHP_SELF'], '.php');
+		$this->_topic_id     = isset($_GET['id']) ? (int)$_GET['id'] : null;
+		$this->_category_id  = isset($_GET['category_id']) ? (int)$_GET['category_id'] : null;
+		$this->_tag_id       = isset($_GET['tag_id']) ? (int)$_GET['tag_id'] : null;
+		$this->_comment_id   = isset($_POST['comment_id']) ? (int)$_POST['comment_id'] : null;
+		$this->_comment_body = isset($_POST['comment_body']) ? $_POST['comment_body'] : null;
+		$this->_route_name   = basename($_SERVER['PHP_SELF'], '.php');
 		$this->setStyleSheet($this->_route_name);
 		$this->setJavascript($this->_route_name);
 	}
@@ -72,6 +74,29 @@ class FrontClass extends ModelClass
 		$stmt->execute();
 		$list['data'] = $stmt->fetchAll();
 
+		return $list;
+	}
+
+	/**
+	 * @return array $list
+	 */
+	public function getAllArticleIds()
+	{
+		$m = new ModelClass;
+		$list = [];
+		$sql = "
+		SELECT
+			a.topic_id as topic_id
+		FROM
+			articles as a
+		WHERE
+			a.deleted_at IS NULL
+		";
+
+		$base = $m->_pdo->query($sql)->fetchAll();
+		foreach ($base as $val) {
+			$list[] = $val['topic_id'];
+		}
 		return $list;
 	}
 
@@ -182,8 +207,6 @@ class FrontClass extends ModelClass
 		return $stmt->fetchAll();
 	}
 
-
-
 	/**
 	 * @param array $datas
 	 * @return array $opt_datas
@@ -253,10 +276,9 @@ class FrontClass extends ModelClass
 		return $stmt->fetchAll();
 	}
 
-
 	/**
 	 * @return array $datas
-		*/
+	 */
 	public function getDetailList()
 	{
 
@@ -281,6 +303,51 @@ class FrontClass extends ModelClass
 		return $this->optDetailList($datas);
 	}
 
+	/**
+	 * @return array $datas
+	 */
+	public function getCommentList()
+	{
+		$m = new ModelClass;
+
+		$sql = "
+		SELECT
+		 *
+		FROM
+		 comments
+		WHERE
+		 topic_id = :topic_id AND
+		 deleted_at IS NULL
+		";
+
+		$stmt = $m->_pdo->prepare($sql);
+		$stmt->bindValue(":topic_id", $this->_topic_id);
+		$stmt->execute();
+
+		$datas = $stmt->fetchAll();
+
+		return $datas;
+	}
+
+	public function storeComment()
+	{
+		$m = new ModelClass;
+		$colums = [
+			'comment_id',
+			'n_user_id',
+			'topic_id',
+			'body',
+		];
+		$sql = $this->create($colums, 'comments');
+		$params = [
+			'comment_id' => $this->_comment_id,
+			'n_user_id' => $this->createId(),
+			'topic_id' => $this->_topic_id,
+			'body' => $this->_comment_body,
+		];
+		$this->postParams($sql, $params);
+	}
+
 	public function addArticleView()
 	{
 		$m = new ModelClass;
@@ -295,13 +362,13 @@ class FrontClass extends ModelClass
 			'n_user_id' => $user_id,
 			'total_view' => 1,
 		];
-		$sql = $m->create($columns,'article_views');
-		$m->postParams($sql,$values);
+		$sql = $m->create($columns, 'article_views');
+		$m->postParams($sql, $values);
 	}
 
 	/**
-	* @return bool $bool
-	*/
+	 * @return bool $bool
+	 */
 	public function checkArticleView()
 	{
 		$m = new ModelClass;
@@ -312,8 +379,8 @@ class FrontClass extends ModelClass
 		FROM
 			article_views
 		WHERE
-			topic_id = '".$this->_topic_id."' AND
-			n_user_id = '".$user_id."'
+			topic_id = '" . $this->_topic_id . "' AND
+			n_user_id = '" . $user_id . "'
 		";
 		$stmt = $m->_pdo->prepare($sql);
 		$stmt->execute();
@@ -322,11 +389,11 @@ class FrontClass extends ModelClass
 	}
 
 	/**
-	* @param int $limit
-	* @param bool $daily
-	* @return string $free
-	*/
-public function createId($limit = 10, $daily = false, $free = '')
+	 * @param int $limit
+	 * @param bool $daily
+	 * @return string $free
+	 */
+	public function createId($limit = 10, $daily = false, $free = '')
 	{
 		$daily_md5 = ($daily) ? md5(date('Y-m-d')) : '';
 		$free_md5 = ($free) ? md5($free) : md5($_SERVER['REMOTE_ADDR']);

@@ -1,5 +1,6 @@
 <?php
 require_once('_header.php');
+
 $now_page        = isset($_GET['page']) ? $_GET['page'] : 1;
 $category_id     = isset($_GET['category_id']) ? $_GET['category_id'] : '';
 $tag_id          = isset($_GET['tag_id']) ? $_GET['tag_id'] : '';

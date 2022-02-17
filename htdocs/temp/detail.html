@@ -1,20 +1,38 @@
 <?include('_header.html')?>
 
-<div style="display: none;">
+<div style="display: none;" class="recommends">
+	<pre>
+		<?print_r($recommend_topic_ids)?>
+	</pre>
+</div>
+
+<div style="display: none;" class="all_topic_ids">
+	<pre>
+		<?print_r($all_topic_ids)?>
+	</pre>
+</div>
+
+<div style="display: none;" class="relations">
 	<pre>
 		<?print_r($relations)?>
 	</pre>
 </div>
 
-<div style="display: none;">
+<div style="display: none;" class="article">
 	<pre>
 		<?print_r($article)?>
 	</pre>
 </div>
 
-<div style="display: none;">
+<div style="display: none;" class="contents">
 	<pre>
 		<?print_r($contents)?>
+	</pre>	
+</div>
+
+<div style="display: none;" class="comments">
+	<pre>
+		<?print_r($comments)?>
 	</pre>	
 </div>
 
@@ -65,8 +83,40 @@
 	<? } ?>
 </ul>
 
-<div class="quotation">
+<div id="comment_area" class="quotation">
 	<a href="https://girlschannel.net/topics/<?=$article['topic_id']?>">引用元:<?=$article['title']?></a>
+</div>
+
+<div class="comments-wrap">
+	<p class="comments-title">コメント (<?=count($comments)?>)</p>
+	<? if(count($comments)){ ?>
+		<ul>
+			<? foreach($comments as $c){ ?>
+				<li>
+					<div class="comment-item-wrap">
+						<p class="comment-head">
+							<b><?=$c['comment_id']?>.</b><br>
+							<span><?=$c['created_at']?></span>
+						</p>
+						<p class="body">
+							<?=nl2br($c['body'])?>
+						</p>
+					</div>
+				</li>
+				<? } ?>
+		</ul>
+		<? } ?>
+
+		<? if(!in_array($f->createId(),array_column($comments,'n_user_id'))){ ?>
+
+			<form class="comment-post-form" action="/detail.php?id=<?=$article['topic_id']?>#comment_area" method="post">
+				<input type="hidden" name="comment_id" value="<?=count($comments) + 1?>"">
+				<textarea name="comment_body"></textarea>
+				<button type="submit">投稿する</button>
+			</form>
+		
+		<? } ?>
+
 </div>
 
 <div class="relations-wrap">
