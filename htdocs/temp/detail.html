@@ -1,5 +1,11 @@
 <?include('_header.html')?>
 
+<div style="display: none;" class="recommend_articles">
+	<pre>
+		<?print_r($recommend_articles)?>
+	</pre>
+</div>
+
 <div style="display: none;" class="recommends">
 	<pre>
 		<?print_r($recommend_topic_ids)?>
@@ -118,6 +124,24 @@
 		<? } ?>
 
 </div>
+
+<? if(count($recommend_articles) >= 5){ ?>
+
+	<div class="relations-wrap">
+		<p class="relations-title">おすすめ記事</p>
+		<ul>
+			<? foreach($recommend_articles as $val){ ?>
+				<li>
+					<a href="detail.php?id=<?=$val['topic_id']?>" class="item-wrap">
+						<img class="lazyload" data-src="<?=$val['img_src']?>" alt="<?=$val['title']?>" width="80" height="80">
+						<p class="title"><?=$val['title']?></p>
+					</a>
+				</li>
+			<? } ?>
+		</ul>
+	</div>
+	
+<? } ?>
 
 <div class="relations-wrap">
 	<p class="relations-title">関連記事</p>

@@ -131,7 +131,8 @@
 	max-width: 100%;
 }
 
-.relations-wrap {
+.relations-wrap,
+.comments-wrap {
 	padding: 10px;
 }
 
@@ -167,14 +168,16 @@
 	display: -webkit-box;
 }
 
-.relations-title {
+.relations-title,
+.comments-title {
 	font-size: 17px;
 	font-weight: 700;
 	position: relative;
 	padding-left: 10px;
 }
 
-.relations-title:before {
+.relations-title:before,
+.comments-title:before {
 	content: '';
 	width: 3px;
 	height: 20px;
@@ -192,4 +195,59 @@
 
 .quotation a {
 	color: #aaa;
+}
+
+.comment-post-form:before {
+	content: "コメントを書く";
+	font-size: 14px;
+	font-weight: 500;
+	margin: 10px auto;
+	display: block;
+}
+
+.comment-post-form textarea {
+	width: 100%;
+	padding: 10px;
+	border: 2px solid #333;
+	border-radius: 5px;
+	font-size: 14px;
+	font-family: 'Noto Sans JP';
+	word-break: break-all;
+	height: 100px;
+}
+
+.comment-post-form button {
+	margin: 5px 0 5px auto;
+	display: flex;
+	background: #fff;
+	border: 1px solid #333;
+	height: 36px;
+	align-items: center;
+	justify-content: center;
+	line-height: 36px;
+	border-radius: 18px;
+	width: 100px;
+	box-shadow: 0px 2px 3px rgb(0 0 0 / 50%);
+	color: #333;
+}
+
+.comment-head b {
+	font-size: 14px;
+}
+
+.comment-head span {
+	font-size: 11px;
+	color: #767575;
+}
+
+.comment-item-wrap .body {
+	font-size: 16px;
+}
+
+.comments-wrap ul {
+	padding: 20px 10px;
+}
+
+.comments-wrap li {
+	margin-bottom: 20px;
 }

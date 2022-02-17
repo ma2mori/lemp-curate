@@ -139,6 +139,31 @@ class FrontClass extends ModelClass
 	}
 
 	/**
+	 * @param array $topic_ids
+	 * @return array $list
+	 */
+	public function getRecommendArticleList($topic_ids)
+	{
+		$m = new ModelClass;
+		$list = [];
+		$sql = "
+			SELECT
+				*
+			FROM
+				articles
+			WHERE
+				topic_id = :topic_id
+		";
+		foreach($topic_ids as $topic_id){
+			$stmt = $m->_pdo->prepare($sql);
+			$stmt->bindValue(":topic_id", $topic_id);
+			$stmt->execute();
+			$list[] = $stmt->fetchAll()[0];
+		}
+		return $list;
+	}
+
+	/**
 	 * @param string $topic_id
 	 * @return array $match_tags
 	 */

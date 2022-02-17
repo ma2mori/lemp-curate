@@ -21,5 +21,6 @@ if($f->_comment_body){
 $recommend->setRating($f->createId(), $article['topic_id']);
 $recommend->calcJaccard($all_topic_ids);
 $recommend_topic_ids = $recommend->getItems($article['topic_id']);
+$recommend_articles  = $f->getRecommendArticleList($recommend_topic_ids);
 
 include($temp_file);
