@@ -1,4 +1,4 @@
 *.env
-/htdocs/vendor
-/htdocs/logs
-/htdocs/cron/.env.php
+/app/vendor
+/app/logs
+/app/cron/.env.php

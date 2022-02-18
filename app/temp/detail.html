@@ -1,5 +1,11 @@
 <?include('_header.html')?>
 
+<div style="display: none;" class="redis_keys">
+	<pre>
+		<?print_r($redis->keys('*'))?>
+	</pre>
+</div>
+
 <div style="display: none;" class="recommend_articles">
 	<pre>
 		<?print_r($recommend_articles)?>
