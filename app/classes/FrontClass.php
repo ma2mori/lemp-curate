@@ -21,6 +21,70 @@ class FrontClass extends ModelClass
 		$this->_route_name   = basename($_SERVER['PHP_SELF'], '.php');
 		$this->setStyleSheet($this->_route_name);
 		$this->setJavascript($this->_route_name);
+
+		$this->_contents_properties = [
+			'id',
+			'topic_id',
+			'content_id',
+			'content_body',
+			'anchor',
+			'come_lv',
+			'created_at',
+			'updated_at',
+			'deleted_at',
+		];
+	}
+
+	/**
+	 * @param array $datas
+	 * @param string $key_name
+	 * @return array $list
+	 */
+	public function cachingDatas($redis, $datas, $key_name)
+	{
+		foreach ($datas as $key => $data) {
+			foreach ($data as $k => $value) {
+				$redis->hSet($key_name, $key . $k, $value);
+			}
+		}
+	}
+
+	/**
+	 * @param array $cahes
+	 * @param array $properties
+	 * @return array $list
+	 */
+	public function formatCacheToArray($cahes, $properties)
+	{
+		$loop_cnt = count($cahes) / count($properties);
+		ksort($cahes);
+		for ($i = 0; $i < $loop_cnt; $i++) {
+			$data = [];
+			foreach ($properties as $val) {
+				$data += [$val => $cahes[$i . $val]];
+			}
+			$list[] = $data;
+		}
+		return $list;
+	}
+
+	/**
+	 * @param array $datas
+	 * @param array $properties
+	 * @return array $opt_datas
+	 */
+	public function optimizeFechAllDatas($datas,$properties){
+		$opt_datas = [];
+		foreach($datas as $data){
+			$opt_data = [];
+			foreach($data as $k => $d){
+				if(in_array($k,$properties)){
+					$opt_data[$k] = $d;
+				}
+			}
+			$opt_datas[] = $opt_data;
+		}
+		return $opt_datas;
 	}
 
 	/**
@@ -154,7 +218,7 @@ class FrontClass extends ModelClass
 			WHERE
 				topic_id = :topic_id
 		";
-		foreach($topic_ids as $topic_id){
+		foreach ($topic_ids as $topic_id) {
 			$stmt = $m->_pdo->prepare($sql);
 			$stmt->bindValue(":topic_id", $topic_id);
 			$stmt->execute();
@@ -236,7 +300,7 @@ class FrontClass extends ModelClass
 	 * @param array $datas
 	 * @return array $opt_datas
 	 */
-	private function optDetailList($datas)
+	public function optDetailList($datas)
 	{
 
 		foreach ($datas as $d) {
@@ -311,7 +375,15 @@ class FrontClass extends ModelClass
 
 		$sql = "
 		SELECT
-		 *
+			id,
+			topic_id,
+			content_id,
+			content_body,
+			anchor,
+			come_lv,
+			created_at,
+			updated_at,
+			deleted_at
 		FROM
 		 contents
 		WHERE
@@ -324,8 +396,8 @@ class FrontClass extends ModelClass
 		$stmt->execute();
 
 		$datas = $stmt->fetchAll();
-
-		return $this->optDetailList($datas);
+		$opt_datas = $this->optimizeFechAllDatas($datas,$this->_contents_properties);
+		return $opt_datas;
 	}
 
 	/**

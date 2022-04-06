@@ -7,7 +7,16 @@ if(!$f->checkArticleView()){
 
 $article       = $f->getDetailInfo()[0];
 $date          = DateTime::createFromFormat('Y-m-d H:i:s', $article['created_at']);
-$contents      = $f->getDetailList();
+
+$contents_key = 'contents'.$article['topic_id'];
+if($redis->hGetAll($contents_key)){
+	$base_contents = $f->formatCacheToArray($redis->hGetAll($contents_key),$f->_contents_properties);
+}else{
+	$f->cachingDatas($redis,$f->getDetailList(),$contents_key);
+	$base_contents = $f->formatCacheToArray($redis->hGetAll($contents_key),$f->_contents_properties);
+}
+
+$contents      = $f->optDetailList($base_contents);
 $comments      = $f->getCommentList();
 $relations     = $f->getRelationArticleList($article['category_id']);
 $all_topic_ids = $f->getAllArticleIds();

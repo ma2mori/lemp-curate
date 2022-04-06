@@ -6,6 +6,12 @@
 	</pre>
 </div>
 
+<div style="display: none;" class="full_cache">
+	<pre>
+		<?print_r($redis->hGetAll('contents_'.$article['topic_id']))?>
+	</pre>
+</div>
+
 <div style="display: none;" class="recommend_articles">
 	<pre>
 		<?print_r($recommend_articles)?>
