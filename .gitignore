@@ -4,3 +4,4 @@
 /app/cron/.env.php
 *.sql
 *.log
+*node_modules/
