@@ -23,7 +23,7 @@ $all_topic_ids = $f->getAllArticleIds();
 
 if($f->_comment_body){
 	$f->storeComment();
-	header('Location: http://160.16.139.140/detail.php?id='.$article['topic_id'].'#comment_area');
+	header('Location: '.$_ENV['APP_URL'].'detail.php?id='.$article['topic_id'].'#comment_area');
 	exit;
 }
 

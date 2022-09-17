@@ -114,7 +114,7 @@
 					<div class="comment-item-wrap">
 						<p class="comment-head">
 							<b><?=$c['comment_id']?>.</b><br>
-							<span><?=$c['created_at']?></span>
+							<span><?=date('Y-m-d H:i',strtotime($c['created_at'].'+9 hours'))?></span>
 						</p>
 						<p class="body">
 							<?=nl2br($c['body'])?>
