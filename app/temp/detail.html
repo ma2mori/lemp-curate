@@ -1,170 +1,128 @@
 <?include('_header.html')?>
 
-<div style="display: none;" class="redis_keys">
-	<pre>
-		<?print_r($redis->keys('*'))?>
-	</pre>
-</div>
-
-<div style="display: none;" class="full_cache">
-	<pre>
-		<?print_r($redis->hGetAll('contents_'.$article['topic_id']))?>
-	</pre>
-</div>
-
-<div style="display: none;" class="recommend_articles">
-	<pre>
-		<?print_r($recommend_articles)?>
-	</pre>
-</div>
-
-<div style="display: none;" class="recommends">
-	<pre>
-		<?print_r($recommend_topic_ids)?>
-	</pre>
-</div>
-
-<div style="display: none;" class="all_topic_ids">
-	<pre>
-		<?print_r($all_topic_ids)?>
-	</pre>
-</div>
-
-<div style="display: none;" class="relations">
-	<pre>
-		<?print_r($relations)?>
-	</pre>
-</div>
-
-<div style="display: none;" class="article">
-	<pre>
-		<?print_r($article)?>
-	</pre>
-</div>
-
-<div style="display: none;" class="contents">
-	<pre>
-		<?print_r($contents)?>
-	</pre>	
-</div>
-
-<div style="display: none;" class="comments">
-	<pre>
-		<?print_r($comments)?>
-	</pre>	
-</div>
-
 <div class="bread-list-wrap">
 	<ul>
 		<li>
-			<a href="/">TOP  &gt;</a>
+			<a href="/">TOP &gt;</a>
 		</li>
 		<li>
-			<a href="/?category_id=<?=$article['category_id']?>"><?=$category_list[$article['category_id']]?>  &gt;</a>
+			<a href="/?category_id=<?=$article['category_id']?>">
+				<?=$category_list[$article['category_id']]?> &gt;
+			</a>
 		</li>
 		<li class="active">
-			<a href="/detail.php?id=<?=$article['topic_id']?>"><?=$article['title']?></a>
+			<a href="/detail.php?id=<?=$article['topic_id']?>">
+				<?=$article['title']?>
+			</a>
 		</li>
 	</ul>
 </div>
 
-<?/****
-<div class="contents-info-header">
-	<img src="<?=$article['img_src']?>" alt="<?=$article['title']?>" width="80" height="80">
-	<p class="title"><?=$article['title']?></p>
-	<p class="created"><?=$date->format('y年n月j日 G時')?></p>
-</div>
-****/?>
-
 <ul class="contents-wrap">
-	
-	<? foreach($contents as $content){ ?>
-		<li class="item <?=isset($content['res_anchor_flg']) ? 'res-anchor' : 'no-res-'.rand(1,5)?>">
-			<p class="head"><?=$content['content_id']?>.匿名</p>
-			<p class="body lv-<?=$content['come_lv']?>">
-				<?=htmlspecialchars_decode($content['content_body'])?>
-			</p>
 
-			<? if(isset($content['res_anchors'])){ ?>
-				<br>
-				<? foreach($content['res_anchors'] as $anchor_body){ ?>
-					<div class="item anchor">
-						<p class="head"><?=$anchor_body['content_id']?>.匿名</p>
-						<p class="body lv-<?=$anchor_body['come_lv']?>">
-							<?=htmlspecialchars_decode($anchor_body['content_body'])?>
-						</p>
-					</div>
-				<? } ?>
-			<? } ?>
+	<? foreach($contents as $content){ ?>
+	<li class="item <?=isset($content['res_anchor_flg']) ? 'res-anchor' : 'no-res-'.rand(1,5)?>">
+		<p class="head">
+			<?=$content['content_id']?>.匿名
+		</p>
+		<p class="body lv-<?=$content['come_lv']?>">
+			<?=htmlspecialchars_decode($content['content_body'])?>
+		</p>
+
+		<? if(isset($content['res_anchors'])){ ?>
+		<br>
+		<? foreach($content['res_anchors'] as $anchor_body){ ?>
+		<div class="item anchor">
+			<p class="head">
+				<?=$anchor_body['content_id']?>.匿名
+			</p>
+			<p class="body lv-<?=$anchor_body['come_lv']?>">
+				<?=htmlspecialchars_decode($anchor_body['content_body'])?>
+			</p>
+		</div>
+		<? } ?>
+		<? } ?>
 	</li>
-	
+
 	<? } ?>
 </ul>
 
 <div id="comment_area" class="quotation">
-	<a href="https://girlschannel.net/topics/<?=$article['topic_id']?>">引用元:<?=$article['title']?></a>
+	<a href="https://girlschannel.net/topics/<?=$article['topic_id']?>">引用元:
+		<?=$article['title']?>
+	</a>
 </div>
 
 <div class="comments-wrap">
-	<p class="comments-title">コメント (<?=count($comments)?>)</p>
+	<p class="comments-title">コメント (
+		<?=count($comments)?>)
+	</p>
 	<? if(count($comments)){ ?>
-		<ul>
-			<? foreach($comments as $c){ ?>
-				<li>
-					<div class="comment-item-wrap">
-						<p class="comment-head">
-							<b><?=$c['comment_id']?>.</b><br>
-							<span><?=date('Y-m-d H:i',strtotime($c['created_at'].'+9 hours'))?></span>
-						</p>
-						<p class="body">
-							<?=nl2br($c['body'])?>
-						</p>
-					</div>
-				</li>
-				<? } ?>
-		</ul>
+	<ul>
+		<? foreach($comments as $c){ ?>
+		<li>
+			<div class="comment-item-wrap">
+				<p class="comment-head">
+					<b>
+						<?=$c['comment_id']?>.
+					</b><br>
+					<span>
+						<?=date('Y-m-d H:i',strtotime($c['created_at'].'+9 hours'))?>
+					</span>
+				</p>
+				<p class="body">
+					<?=nl2br($c['body'])?>
+				</p>
+			</div>
+		</li>
 		<? } ?>
+	</ul>
+	<? } ?>
 
-		<? if(!in_array($f->createId(),array_column($comments,'n_user_id'))){ ?>
+	<? if(!in_array($f->createId(),array_column($comments,'n_user_id'))){ ?>
 
-			<form class="comment-post-form" action="/detail.php?id=<?=$article['topic_id']?>#comment_area" method="post">
-				<input type="hidden" name="comment_id" value="<?=count($comments) + 1?>"">
-				<textarea name="comment_body"></textarea>
-				<button type="submit">投稿する</button>
-			</form>
-		
-		<? } ?>
+	<form class="comment-post-form" action="/detail.php?id=<?=$article['topic_id']?>#comment_area" method="post">
+		<input type="hidden" name="comment_id" value="<?=count($comments) + 1?>"">
+				<textarea name=" comment_body"></textarea>
+		<button type="submit">投稿する</button>
+	</form>
+
+	<? } ?>
 
 </div>
 
 <? if(count($recommend_articles) >= 5){ ?>
 
-	<div class="relations-wrap">
-		<p class="relations-title">おすすめ記事</p>
-		<ul>
-			<? foreach($recommend_articles as $val){ ?>
-				<li>
-					<a href="detail.php?id=<?=$val['topic_id']?>" class="item-wrap">
-						<img class="lazyload" data-src="<?=$val['img_src']?>" alt="<?=$val['title']?>" width="80" height="80">
-						<p class="title"><?=$val['title']?></p>
-					</a>
-				</li>
-			<? } ?>
-		</ul>
-	</div>
-	
+<div class="relations-wrap">
+	<p class="relations-title">おすすめ記事</p>
+	<ul>
+		<? foreach($recommend_articles as $val){ ?>
+		<li>
+			<a href="detail.php?id=<?=$val['topic_id']?>" class="item-wrap">
+				<img class="lazyload" data-src="<?=$val['img_src']?>" alt="<?=$val['title']?>" width="80" height="80">
+				<p class="title">
+					<?=$val['title']?>
+				</p>
+			</a>
+		</li>
+		<? } ?>
+	</ul>
+</div>
+
 <? } ?>
 
 <div class="relations-wrap">
 	<p class="relations-title">関連記事</p>
 	<ul>
 		<? foreach($relations as $val){ ?>
-			<li>
-				<a href="detail.php?id=<?=$val['topic_id']?>" class="item-wrap">
-					<img class="lazyload" data-src="<?=$val['img_src']?>" alt="<?=$val['title']?>" width="80" height="80">
-					<p class="title"><?=$val['title']?></p>
-				</a>
-			</li>
+		<li>
+			<a href="detail.php?id=<?=$val['topic_id']?>" class="item-wrap">
+				<img class="lazyload" data-src="<?=$val['img_src']?>" alt="<?=$val['title']?>" width="80" height="80">
+				<p class="title">
+					<?=$val['title']?>
+				</p>
+			</a>
+		</li>
 		<? } ?>
 	</ul>
 </div>

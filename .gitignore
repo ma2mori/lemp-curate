@@ -2,6 +2,7 @@
 /app/vendor
 /app/logs
 /app/cron/.env.php
+/app/_def.php
 *.sql
 *.log
 *node_modules/
