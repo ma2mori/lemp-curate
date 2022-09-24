@@ -553,12 +553,12 @@ class FrontClass extends ModelClass
 	public function getAssets()
 	{
 		foreach ($this->getStyleSheet() as $val) {
-			echo '<link rel="stylesheet" href="' . $val . '?date=' . date('YmdHis') . '" async>';
-			// echo '<link rel="stylesheet" href="' . $val. '" async>';
+			// echo '<link rel="stylesheet" href="' . $val . '?date=' . date('YmdHis') . '" async>';
+			echo '<link rel="stylesheet" href="' . $val. '" async>';
 		}
 		foreach ($this->getJavascript() as $val) {
-			echo '<script defer src="' . $val . '?date=' . date('YmdHis') . '" ></script>';
-			// echo '<script defer src="'.$val.'"></script>';
+			// echo '<script defer src="' . $val . '?date=' . date('YmdHis') . '" ></script>';
+			echo '<script defer src="'.$val.'"></script>';
 		}
 	}
 }

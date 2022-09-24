@@ -18,4 +18,6 @@ if(!$category_id && $tag_id){
 	}
 }
 
+$page_title = SITENAME;
+
 include($temp_file);

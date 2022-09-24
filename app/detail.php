@@ -32,4 +32,6 @@ $recommend->calcJaccard($all_topic_ids);
 $recommend_topic_ids = $recommend->getItems($article['topic_id']);
 $recommend_articles  = $f->getRecommendArticleList($recommend_topic_ids);
 
+$page_title = SITENAME . ' | ' .$article['title'];
+
 include($temp_file);
