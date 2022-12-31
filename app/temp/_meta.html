@@ -1,5 +1,40 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
 <meta name="robots" content="noindex">
-<meta name="description" content="<?=DESCRIPTION?>">
-<title><?=$page_title?></title>
+<meta name="description" content="<?=SITENAME?>">
+<meta property="og:title" content="<?=$page_title?>">
+<meta property="og:site_name" content="<?=SITENAME?>">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:type" content="website">
+
+<? if($f->_route_name != 'detail'){ ?>
+
+<meta property="og:url" content="<?=$_ENV['APP_URL']?>">
+<meta property="og:description" content="<?=SITENAME?>">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@<?=SITENAME?>">
+<meta name="twitter:url" content="<?=$_ENV['APP_URL']?>">
+<meta name="twitter:title" content="<?=SITENAME?>">
+<meta name="twitter:discription" content="@<?=SITENAME?>">
+<meta name="twitter:image" content="https://og-image.eyemono.moe/**%E3%83%AC%E3%83%87%E3%82%A3%E3%83%BC%E3%82%B9%E3%81%BE%E3%81%A8%E3%82%81**%0A.png?pattern=polka&md=1&fontSize=75px&textColor=%23404040&textStrongColor=%23404040&overlay=">
+<link rel="shortcut icon" href="<?=$_ENV['APP_URL'].'temp/img/logo.svg'?>">
+<link rel="apple-touch-icon" href="<?=$_ENV['APP_URL'].'temp/img/logo.svg'?>">
+
+<? }else{ ?>
+
+<meta property="og:url" content="<?=$_ENV['APP_URL'].'/detail.php?id='.$article['topic_id']?>">
+<meta property="og:description" content="<?=SITENAME?>">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@<?=SITENAME?>">
+<meta name="twitter:url" content="<?=$_ENV['APP_URL'].'/detail.php?id='.$article['topic_id']?>">
+<meta name="twitter:title" content="<?=$article['title']?>">
+<meta name="twitter:discription" content="@<?=SITENAME?>">
+<meta name="twitter:image" content="https://og-image.eyemono.moe/**%E3%83%AC%E3%83%87%E3%82%A3%E3%83%BC%E3%82%B9%E3%81%BE%E3%81%A8%E3%82%81**%0A.png?pattern=polka&md=1&fontSize=75px&textColor=%23404040&textStrongColor=%23404040&overlay=">
+<link rel="shortcut icon" href="<?=$_ENV['APP_URL'].'temp/img/logo.svg'?>">
+<link rel="apple-touch-icon" href="<?=$_ENV['APP_URL'].'temp/img/logo.svg'?>">
+
+<? } ?>
+
+<title>
+	<?=$page_title?>
+</title>
